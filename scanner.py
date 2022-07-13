@@ -6,17 +6,25 @@
 # Credit for Starting Build to thePacketGeek
 # https://thepacketgeek.com/scapy/building-network-tools/part-10/#sweep-and-scan
 
-
 import random
 from ipaddress import IPv4Network
-from typing import List
+# from typing import List
 from scapy.sendrecv import sr
 from scapy.all import ICMP, IP, sr1, TCP
 
 # Define IP range to scan
 
 
-def port_scan(host: str, ports: List[int]):
+def port_scan(host: str, port_range: str):
+
+    ports = []
+    if '-' in port_range:
+        start_port, fin_port = port_range.split('-')
+        for x in range(int(start_port), int(fin_port) + 1):
+            ports.append(x)
+    else:
+        ports.append(port_range)
+
     # Send SYN with random Src Port for each Dst port
     for dst_port in ports:
         src_port = random.randint(1025, 65534)
@@ -47,16 +55,16 @@ def port_scan(host: str, ports: List[int]):
                 print(f"{host}:{dst_port} is filtered (silently dropped).")
 
 
-def port(network:str, ports: List[int]):
+def scan(network:  str, ports: str):
     live_count = 0
     addresses = IPv4Network(network)
     port_range = ports
 
     # Send ICMP ping request, wait for answer
     for host in addresses:
-        if host in (addresses.network_address, addresses.broadcast_address):
+#        if host in (addresses.network_address, addresses.broadcast_address):
             # Skip network and broadcast addresses
-            continue
+#            continue
 
         resp = sr1(IP(dst=str(host)) / ICMP(), timeout=2, verbose=0)
 
