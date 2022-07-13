@@ -5,7 +5,7 @@
 
 # Imports
 import argparse
-
+import Scanner
 
 # Constants
 VERSION = 1.0
@@ -43,4 +43,6 @@ def start_program():
 
 # Main
 if __name__ == '__main__':
+    PortRange = [135, 443]
     option = start_program()
+    Scanner.port_scan(option.target, PortRange)
