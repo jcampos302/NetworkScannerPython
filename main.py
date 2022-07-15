@@ -5,6 +5,7 @@
 
 # Imports
 import argparse
+import time
 import scanner
 
 # Constants
@@ -32,12 +33,15 @@ def start_program():
         options.port = input("Enter Target Port(s): ")
         if options.port == "":
             options.port = '1-1000'
-        options.target = "192.168.0.0/24"
-        options.port = '1-10'
+        options.target = "10.120.20.0/24"
+        options.port = '1-1000'
     return options
 
 
 # Main
 if __name__ == '__main__':
+    start_time = time.time()
     option = start_program()
     scanner.scan(option.target, option.port)
+    end_time = time.time()
+    print(f'Total time is = {end_time-start_time}')
