@@ -6,7 +6,11 @@
 # Imports
 import argparse
 import time
+
+from scapy.layers.inet import ICMP
+
 import scanner
+import packet
 
 # Constants
 VERSION = 3.0
@@ -41,7 +45,16 @@ def start_program():
 # Main
 if __name__ == '__main__':
     start_time = time.time()
-    option = start_program()
-    scanner.scan(option.target, option.port)
+    # option = start_program()
+    # scanner.scan(option.target, option.port)
+
+    # resp = packet.icmp_packet("localhost")
+    # print(resp)
+    # resp = packet.arp_packet()
+    # print(resp)
+    resp = packet.tcp_packet("localhost", 445)
+    print(resp)
+    resp = packet.udp_packet("localhost", 53)
+    print(resp)
     end_time = time.time()
     print(f'Total time is = {end_time-start_time}')
